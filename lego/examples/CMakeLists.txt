@@ -1,0 +1,9 @@
+# example_nonlinear_fitting
+add_executable(example_nonlinear_fitting nonlinear_fitting/example_nonlinear_fitting.cpp)
+set_target_properties(example_nonlinear_fitting PROPERTIES OUTPUT_NAME example_nonlinear_fitting${EXE_POSTFIX})
+target_link_libraries(example_nonlinear_fitting base)
+
+# example_pose_graph
+add_executable(example_pose_graph pose_graph/example_pose_graph.cpp)
+set_target_properties(example_pose_graph PROPERTIES OUTPUT_NAME example_pose_graph${EXE_POSTFIX})
+target_link_libraries(example_pose_graph base slam)
