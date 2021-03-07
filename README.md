@@ -36,7 +36,7 @@ cmake .. && make -j6
 sudo make install 
 ```
 
-Now we have already installed the LEGO and then we can read the code and use it. 
+Now we have already installed the LEGO and then we can read the codes and use it. 
 
 ### Examples 
 
