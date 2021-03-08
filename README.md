@@ -1,9 +1,6 @@
-
-
-# LEGO # 
+# LEGO #
 
 **LEGO** is a **L**ight w**E**ight **G**raph-based **O**ptimization library in C++. It is a graph-based non-linear optimization framework for learning and practicing which only depends on Eigen3. This graph-based optimization library is designed for a generic purpose, and it is primarily targeted at visual or visual-inertial SLAM optimization problems. Now, the optimization problem solving in LEGO mainly depends on Levenberg-Marquardt algorithm and it will include more algorithms in the future, such as Dog-leg. This version is only tested on Ubuntu 18.04. 
-
 
 
 
@@ -39,7 +36,7 @@ sudo make install
 
 Now we have already installed the LEGO and then we can read the codes and use it. 
 
-### Examples 
+### Examples
 
 There are two examples which are implemented by LEGO (one of non-linear data fitting and one of pose graph optimization on SE3/se3 with Lie algebra) under the [lego/examples/](./lego/examples/) folder. 
 
@@ -104,6 +101,17 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   Iteration = 6,	Chi = 8.81683e+08,	Lambda = 1766.34
   ...
   ```
+
+### Uninstall 
+
+We can delete the LEGO header files (\*.h/\*.hpp) and libs (\*.so) from where we installed it. Default: 
+
+```bash
+# headers 
+sudo rm -rf /usr/local/include/lego/ 
+# libs 
+sudo rm -rf /usr/local/lib/liblego_* 
+```
 
 
 
