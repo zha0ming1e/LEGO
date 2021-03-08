@@ -8,7 +8,7 @@
 
 ### Prerequisites
 
-- [**CMake**](https://cmake.org/) and **GCC**
+- **GCC** and [**CMake**](https://cmake.org/) 
 
 - [**Eigen3**](http://eigen.tuxfamily.org/) 
 
@@ -16,7 +16,7 @@
 
   ```bash
   # cmake 
-  sudo apt-get install cmake 
+  sudo apt-get install gcc cmake 
   # Eigen3 
   sudo apt-get install libeigen3-dev 
   ```
