@@ -29,6 +29,7 @@ We can build and install LEGO from this [repository](https://github.com/zha0ming
 git clone https://github.com/zha0ming1e/LEGO.git 
 cd LEGO/ 
 mkdir build/ 
+cd build/ 
 cmake .. && make -j6 
 # if you want to install it 
 sudo make install 
