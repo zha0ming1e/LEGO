@@ -47,7 +47,6 @@ public:
         double data[7];
         for (int i = 0; i < 7; i++)
             is >> data[i];
-
         estimate_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
                          Vector3d(data[0], data[1], data[2])).log();
     }
@@ -56,9 +55,10 @@ public:
         //std::cout << "vertex writing..." << std::endl;
         os << getId() << " ";
         SE3d est = SE3d::exp(estimate_);
-        Quaterniond q = SE3d::exp(estimate_).unit_quaternion();
+        Quaterniond q = est.unit_quaternion();
         os << est.translation().transpose() << " ";
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << endl;
+
         return true;
     }
 
@@ -89,12 +89,13 @@ public:
         double data[7];
         for (int i = 0; i < 7; i++)
             is >> data[i];
-        Quaterniond q(data[6], data[3], data[4], data[5]);
-        q.normalize();
+        measurement_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
+                            Vector3d(data[0], data[1], data[2])).log();
 
-        measurement_ = SE3d(q, Vector3d(data[0], data[1], data[2])).log();
-        for (int i = 0; i < getInformation().rows() && is.good(); i++)
-            for (int j = i; j < getInformation().cols() && is.good(); j++) {
+        auto infoMat = getInformation();
+        int rows = infoMat.rows(), cols = infoMat.cols();
+        for (int i = 0; i < rows && is.good(); i++)
+            for (int j = i; j < cols && is.good(); j++) {
                 double info;
                 is >> info;
                 information_(i, j) = info;
@@ -116,8 +117,10 @@ public:
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << " ";
 
         // information matrix
-        for (int i = 0; i < getInformation().rows(); i++)
-            for (int j = i; j < getInformation().cols(); j++) {
+        auto infoMat = getInformation();
+        int rows = infoMat.rows(), cols = infoMat.cols();
+        for (int i = 0; i < rows; i++)
+            for (int j = i; j < cols; j++) {
                 os << information_(i, j) << " ";
             }
         os << endl;
@@ -198,13 +201,14 @@ int main(int argc, char **argv) {
         if (!fin.good()) break;
     }
 
-    cout << "read total " << vertexCnt << " vertices, " << edgeCnt << " edges." << endl;
+    cout << "Read Total: " << "\nVertexCount = " << vertexCnt << ", EdgeCount = " << edgeCnt << endl;
 
-    cout << "optimizing ..." << endl;
-    problem.solve(30);
+    cout << "Optimizing..." << endl;
+    problem.solve(100);
 
-    cout << "saving optimization results ..." << endl;
+    cout << "\nSaving optimization results..." << endl;
 
+    // output
     ofstream fout("result_lie.g2o");
     for (auto &v : vectexes) {
         fout << "VERTEX_SE3:QUAT ";
@@ -215,5 +219,6 @@ int main(int argc, char **argv) {
         e->write(fout);
     }
     fout.close();
+
     return 0;
 }
