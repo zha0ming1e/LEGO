@@ -117,7 +117,6 @@ namespace lego {
             jacobian_pose_j.block<3, 3>(O_R, O_R) = Utility::Qleft(corrected_delta_q.inverse() * Qi.inverse() * Qj).bottomRightCorner<3, 3>();
 #endif
             jacobians_[2] = jacobian_pose_j;
-
         }
 
         /// jacobians_[3]
