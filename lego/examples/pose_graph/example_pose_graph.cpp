@@ -1,5 +1,5 @@
 /*
- * example: pose graph optimization on Lie algebra
+ * example: pose graph optimization with Lie algebra
  */
 
 #include <iostream>
