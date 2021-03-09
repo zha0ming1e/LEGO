@@ -90,8 +90,9 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   **Output** 
 
   ```bash
-  read total 2500 vertices, 9799 edges.
-  optimizing ...
+  Read Total: 
+  VertexCount = 2500, EdgeCount = 9799 
+  Optimizing...
   ==========LEGO OPTIMIZER==========
   Iteration = 0,	Chi = 4.78072e+09,	Lambda = 20119.8
   Iteration = 1,	Chi = 1.92146e+09,	Lambda = 13413.2

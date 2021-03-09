@@ -450,12 +450,17 @@ namespace lego {
         double maxDiagonal = 0;
         ulong size = Hessian_.cols();
         assert(Hessian_.rows() == Hessian_.cols() && "Hessian is not square matrix. ");
-        for (ulong i = 0; i < size; ++i)
-            maxDiagonal = std::max(std::abs(Hessian_(i, i)), maxDiagonal);
+        /// is set the initial lambda
+        if (!isSetInitialLambda_) {
+            for (ulong i = 0; i < size; ++i)
+                maxDiagonal = std::max(std::abs(Hessian_(i, i)), maxDiagonal);
 
-        maxDiagonal = std::min(5e10, maxDiagonal);
-        double tau = 1e-5;
-        currentLambda_ = tau * maxDiagonal;
+            maxDiagonal = std::min(5e10, maxDiagonal);
+            double tau = 1e-5;
+            currentLambda_ = tau * maxDiagonal;
+        } else {
+            currentLambda_ = initialLambda_;
+        }
     }
 
     void Problem::addLambdaToHessianLM() {

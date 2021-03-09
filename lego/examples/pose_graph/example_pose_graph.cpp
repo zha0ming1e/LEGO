@@ -23,10 +23,11 @@ using Sophus::SO3d;
 /// the approximate of the inverse of right Jacobian on se(3)
 Mat66 JRInv(const SE3d &e) {
     Mat66 J;
-    J.block(0, 0, 3, 3) = SO3d::hat(e.so3().log());
+    Mat33 phi_hat = SO3d::hat(e.so3().log());
+    J.block(0, 0, 3, 3) = phi_hat;
     J.block(0, 3, 3, 3) = SO3d::hat(e.translation());
     J.block(3, 0, 3, 3) = Mat33::Zero(3, 3);
-    J.block(3, 3, 3, 3) = SO3d::hat(e.so3().log());
+    J.block(3, 3, 3, 3) = phi_hat;
 
     J = J * 0.5 + Mat66::Identity();
 
@@ -48,7 +49,7 @@ public:
         for (int i = 0; i < 7; i++)
             is >> data[i];
         estimate_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
-                         Vector3d(data[0], data[1], data[2])).log();
+                         Vec3(data[0], data[1], data[2])).log();
     }
 
     bool write(ostream &os) const {
@@ -90,39 +91,36 @@ public:
         for (int i = 0; i < 7; i++)
             is >> data[i];
         measurement_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
-                            Vector3d(data[0], data[1], data[2])).log();
+                            Vec3(data[0], data[1], data[2])).log();
 
-        auto infoMat = getInformation();
-        int rows = infoMat.rows(), cols = infoMat.cols();
-        for (int i = 0; i < rows && is.good(); i++)
+        int rows = information_.rows(), cols = information_.cols();
+        for (int i = 0; i < rows && is.good(); i++) {
             for (int j = i; j < cols && is.good(); j++) {
                 double info;
                 is >> info;
                 information_(i, j) = info;
                 if (i != j)
-                    information_(j, i) = information_(i, j);
+                    information_(j, i) = info;
             }
+        }
         return true;
     }
 
     bool write(ostream &os) const {
         //std::cout << "edge writing..." << std::endl;
-        auto v1 = vertexes_[0];
-        auto v2 = vertexes_[1];
-
-        os << v1->getId() << " " << v2->getId() << " ";
+        os << vertexes_[0]->getId() << " " << vertexes_[1]->getId() << " ";
         SE3d m = SE3d::exp(measurement_);
         Eigen::Quaterniond q = m.unit_quaternion();
         os << m.translation().transpose() << " ";
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << " ";
 
         // information matrix
-        auto infoMat = getInformation();
-        int rows = infoMat.rows(), cols = infoMat.cols();
-        for (int i = 0; i < rows; i++)
+        int rows = information_.rows(), cols = information_.cols();
+        for (int i = 0; i < rows; i++) {
             for (int j = i; j < cols; j++) {
                 os << information_(i, j) << " ";
             }
+        }
         os << endl;
         return true;
     }
@@ -137,14 +135,14 @@ public:
 
     // jacobian
     void computeJacobians() override {
-        SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
+        //SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
         SE3d v2 = SE3d::exp(vertexes_[1]->getEstimate());
         Mat66 J = JRInv(SE3d::exp(residual_));
 
-        jacobians_[0] = Mat66::Zero();
+        //jacobians_[0] = Mat66::Zero();
         jacobians_[0] = -J * v2.inverse().Adj();
-        jacobians_[1] = Mat66::Zero();
-        jacobians_[1] = J * v2.inverse().Adj();
+        //jacobians_[1] = Mat66::Zero();
+        jacobians_[1] = -1.0 * jacobians_[0];
     }
 
     std::string getInfo() const override { return std::string("EdgeSE3LieAlgebra"); }
@@ -192,8 +190,8 @@ int main(int argc, char **argv) {
             e->setId(edgeCnt++);
 
             std::vector<std::shared_ptr<lego::BaseVertex>> e_v;
-            e_v.push_back(problem.getAllVertexes().at(idx1));
-            e_v.push_back(problem.getAllVertexes().at(idx2));
+            e_v.push_back(problem.getAllVertexes()[idx1]);
+            e_v.push_back(problem.getAllVertexes()[idx2]);
             e->setVertex(e_v);
             e->read(fin);
             problem.addEdge(e);
@@ -205,6 +203,7 @@ int main(int argc, char **argv) {
     cout << "Read Total: " << "\nVertexCount = " << vertexCnt << ", EdgeCount = " << edgeCnt << endl;
 
     cout << "Optimizing..." << endl;
+    problem.setInitialLambda(1000);
     problem.solve(100);
 
     cout << "\nSaving optimization results..." << endl;

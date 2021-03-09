@@ -72,6 +72,11 @@ namespace lego {
         void setbPrior(const VecX &b) { b_prior_ = b; }
         void setErrPrior(const VecX &b) { err_prior_ = b; }
         void setJtPrior(const MatXX &J) { Jt_prior_inv_ = J; }
+        /// set initial lambda
+        void setInitialLambda(double initLambda) {
+            isSetInitialLambda_ = true;
+            initialLambda_ = initLambda;
+        }
 
         /// extend hessian prior matrix size to fit new data
         void extendHessiansPriorSize(int dim);
@@ -125,6 +130,8 @@ namespace lego {
 
         /// data member
         double currentLambda_;
+        double initialLambda_;
+        bool isSetInitialLambda_ = false;
         double currentChi_;
         double stopThresholdLM_;
         /// the coe to control lambda
