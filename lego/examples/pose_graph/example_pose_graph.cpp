@@ -155,10 +155,11 @@ int main(int argc, char **argv) {
         cout << "Usage: [RUN_FILE] sphere.g2o \nError: argc is not 2. " << endl;
         return 1;
     }
+
     ifstream fin(argv[1]);
     if (!fin) {
         cout << "file " << argv[1] << " does not exist." << endl;
-        return 1;
+        return 2;
     }
 
     // setup lego
