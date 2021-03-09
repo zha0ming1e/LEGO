@@ -156,7 +156,7 @@ int main(int argc, char **argv) {
 
     ifstream fin(argv[1]);
     if (!fin) {
-        cout << "file " << argv[1] << " does not exist." << endl;
+        cout << "Can not open file: " << argv[1] << ". \nPlease check the file path. " << endl;
         return 2;
     }
 

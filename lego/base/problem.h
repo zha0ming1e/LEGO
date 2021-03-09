@@ -72,7 +72,7 @@ namespace lego {
         void setbPrior(const VecX &b) { b_prior_ = b; }
         void setErrPrior(const VecX &b) { err_prior_ = b; }
         void setJtPrior(const MatXX &J) { Jt_prior_inv_ = J; }
-        /// set initial lambda
+        /// set initial lambda: must before the solve() function
         void setInitialLambda(double initLambda) {
             isSetInitialLambda_ = true;
             initialLambda_ = initLambda;
