@@ -89,6 +89,7 @@ int main(int argc, char **argv) {
 
     std::cout << "\nExample: Non-linear Fitting start... " << std::endl;
     /// LM
+    //problem.setVerbose(false);
     problem.solve(30);
 
     auto esti = vertex->getEstimate();
