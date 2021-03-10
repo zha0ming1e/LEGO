@@ -205,7 +205,7 @@ namespace lego {
             if (last_chi_ - currentChi_ < 1e-5) {
                 std::cout << "\nStop the optimization: "
                           << "[last_chi_(" << last_chi_ << ") - currentChi_(" << currentChi_ << ") = "
-                          << last_chi_ -currentChi_
+                          << last_chi_ - currentChi_
                           << "] < 1e-5" << std::endl;
                 stop = true;
             }

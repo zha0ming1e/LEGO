@@ -75,11 +75,11 @@ public:
 };
 
 // edge between lie algebra
-class EdgeSE3LieAlgebra : public lego::BaseEdge {
+class EdgeLieAlgebra : public lego::BaseEdge {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-    EdgeSE3LieAlgebra()
+    EdgeLieAlgebra()
         : lego::BaseEdge(6, 2, std::vector<std::string>{"VertexPose", "VertexPose"}) {
         residual_ = Vec6::Zero();
         measurement_ = Vec6::Zero();
@@ -145,7 +145,7 @@ public:
         jacobians_[1] = -1.0 * jacobians_[0];
     }
 
-    std::string getInfo() const override { return std::string("EdgeSE3LieAlgebra"); }
+    std::string getInfo() const override { return std::string("EdgeLieAlgebra"); }
 };
 
 int main(int argc, char **argv) {
@@ -166,7 +166,7 @@ int main(int argc, char **argv) {
     int vertexCnt = 0, edgeCnt = 0;
 
     vector<std::shared_ptr<VertexPose>> vectexes;
-    vector<std::shared_ptr<EdgeSE3LieAlgebra>> edges;
+    vector<std::shared_ptr<EdgeLieAlgebra>> edges;
     while (!fin.eof()) {
         string name;
         fin >> name;
@@ -184,7 +184,7 @@ int main(int argc, char **argv) {
                 v->setFixed(true);
         } else if (name == "EDGE_SE3:QUAT") {
             // edge
-            std::shared_ptr<EdgeSE3LieAlgebra> e(new EdgeSE3LieAlgebra());
+            std::shared_ptr<EdgeLieAlgebra> e(new EdgeLieAlgebra());
             int idx1, idx2;
             fin >> idx1 >> idx2;
             e->setId(edgeCnt++);
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
     cout << "Read Total: " << "\nVertexCount = " << vertexCnt << ", EdgeCount = " << edgeCnt << endl;
 
     cout << "Optimizing..." << endl;
-    problem.setInitialLambda(1000);
+    //problem.setInitialLambda(1000);
     problem.solve(100);
 
     cout << "\nSaving optimization results..." << endl;
