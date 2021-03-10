@@ -269,7 +269,7 @@ namespace lego {
 
 /// openmp for accelerating
 #ifdef USE_OPENMP
-#pragma omp parallel for
+#pragma omp parallel for num_threads(4)
 #endif
         for (auto &edge : edges_) {
             /// compute residual and jacobian
@@ -370,7 +370,7 @@ namespace lego {
             MatXX Hmm_inv(MatXX::Zero(marg_size, marg_size));
 /// openmp for accelerating
 #ifdef USE_OPENMP
-#pragma omp parallel for
+#pragma omp parallel for num_threads(4)
 #endif
             for (auto &landmarkVertex : idx_landmark_vertexes_) {
                 ulong idx = landmarkVertex.second->getOrderingId() - reserve_size;
@@ -622,7 +622,7 @@ namespace lego {
             MatXX Hmm_inv(MatXX::Zero(marg_size, marg_size));
 /// openmp for accelerating
 #ifdef USE_OPENMP
-#pragma omp parallel for
+#pragma omp parallel for num_threads(4)
 #endif
             for (auto &iter : margLandmark) {
                 ulong idx = iter.second->getOrderingId() - reserve_size;
