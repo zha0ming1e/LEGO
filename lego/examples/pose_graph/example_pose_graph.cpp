@@ -44,7 +44,6 @@ public:
     }
 
     bool read(istream &is) {
-        //std::cout << "vertex reading..." << std::endl;
         double data[7];
         for (int i = 0; i < 7; i++)
             is >> data[i];
@@ -53,7 +52,6 @@ public:
     }
 
     bool write(ostream &os) const {
-        //std::cout << "vertex writing..." << std::endl;
         os << getId() << " ";
         SE3d est = SE3d::exp(estimate_);
         Quaterniond q = est.unit_quaternion();
@@ -86,7 +84,6 @@ public:
     }
 
     bool read(istream &is) {
-        //std::cout << "edge reading..." << std::endl;
         double data[7];
         for (int i = 0; i < 7; i++)
             is >> data[i];
@@ -107,7 +104,6 @@ public:
     }
 
     bool write(ostream &os) const {
-        //std::cout << "edge writing..." << std::endl;
         os << vertexes_[0]->getId() << " " << vertexes_[1]->getId() << " ";
         SE3d m = SE3d::exp(measurement_);
         Eigen::Quaterniond q = m.unit_quaternion();
