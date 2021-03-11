@@ -43,7 +43,7 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
 
 - **Non-linear Data Fitting** 
 
-  - Default updating strategy  
+  - **Default updating strategy** 
 
     **Run** 
 
@@ -81,7 +81,7 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
     a, b, c = 1.0, 2.0, 1.0 
     ```
 
-  - Strategy 1 
+  - **Strategy 1** 
 
     **Run** 
 
