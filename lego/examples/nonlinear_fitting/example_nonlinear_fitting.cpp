@@ -66,9 +66,15 @@ int main(int argc, char **argv) {
     /// build the problem and initial settings
     /// default LM algorithm and strategy
     lego::Problem problem(lego::Problem::ProblemType::BASE);
-    if (std::stoi(argv[1]) == 1) {
+    if (std::stoi(argv[1]) == 0) {
+        //problem.setStrategyType(lego::Problem::StrategyType::DEFAULT);
+    } else if (std::stoi(argv[1]) == 1) {
         /// default LM algorithm and strategy 1
         problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
+    } else {
+        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO] "
+                  << "\nError: strategy index: " << argv[1] << " dose not exist. " << std::endl;
+        return 2;
     }
 
     /// vertex
