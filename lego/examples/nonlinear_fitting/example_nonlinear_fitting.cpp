@@ -49,6 +49,11 @@ public:
 
 //////////////////////// main ////////////////////////
 int main(int argc, char **argv) {
+    if (argc != 2) {
+        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO] \nError: argc is not 2. " << std::endl;
+        return 1;
+    }
+
     /// ground truth
     double a = 1.0, b = 2.0, c = 1.0;
     int N = 1000;
@@ -58,8 +63,13 @@ int main(int argc, char **argv) {
     std::default_random_engine generator;
     std::normal_distribution<double> noise(0, w_sigma);
 
-    /// build the problem
+    /// build the problem and initial settings
+    /// default LM algorithm and strategy
     lego::Problem problem(lego::Problem::ProblemType::BASE);
+    if (std::stoi(argv[1]) == 1) {
+        /// default LM algorithm and strategy 1
+        problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
+    }
 
     /// vertex
     std::shared_ptr<DataFittingVertex> vertex(new DataFittingVertex());
