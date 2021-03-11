@@ -34,7 +34,7 @@ Mat66 JRInv(const SE3d &e) {
     return J;
 }
 
-// pose vertex on lie algebra
+/// pose vertex on lie algebra
 class VertexPose : public lego::BaseVertex {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -61,7 +61,7 @@ public:
         return true;
     }
 
-    // left multiplication
+    /// left multiplication
     void add(const double *update) {
         Vec6 upd;
         upd << update[0], update[1], update[2], update[3], update[4], update[5];
@@ -72,7 +72,7 @@ public:
     std::string getInfo() const override { return std::string("VertexPose"); }
 };
 
-// edge between lie algebra
+/// edge between lie algebra
 class EdgeLieAlgebra : public lego::BaseEdge {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -110,7 +110,7 @@ public:
         os << m.translation().transpose() << " ";
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << " ";
 
-        // information matrix
+        /// information matrix
         int rows = information_.rows(), cols = information_.cols();
         for (int i = 0; i < rows; i++) {
             for (int j = i; j < cols; j++) {
@@ -121,7 +121,7 @@ public:
         return true;
     }
 
-    // residual
+    /// residual
     void computeResidual() override {
         SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
         SE3d v2 = SE3d::exp(vertexes_[1]->getEstimate());
@@ -129,7 +129,7 @@ public:
         residual_ = (mea.inverse() * v1.inverse() * v2).log();
     }
 
-    // jacobian
+    /// jacobian
     void computeJacobians() override {
         //SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
         SE3d v2 = SE3d::exp(vertexes_[1]->getEstimate());
@@ -144,9 +144,10 @@ public:
     std::string getInfo() const override { return std::string("EdgeLieAlgebra"); }
 };
 
+/// main
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        cout << "Usage: [RUN_FILE] sphere.g2o \nError: argc is not 2. " << endl;
+    if (argc != 3) {
+        cout << "Usage: [RUN_FILE_example_pose_graph] sphere.g2o [STRATEGY_NO.] \nError: argc is not 3. " << endl;
         return 1;
     }
 
@@ -156,8 +157,19 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    // setup lego
+    /// build the problem and initial settings
+    /// default LM algorithm and strategy
     lego::Problem problem(lego::Problem::ProblemType::SLAM);
+    if (std::stoi(argv[2]) == 0) {
+        //problem.setStrategyType(lego::Problem::StrategyType::DEFAULT);
+    } else if (std::stoi(argv[2]) == 1) {
+        /// default LM algorithm and strategy 1
+        problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
+    } else {
+        std::cerr << "Usage: [RUN_FILE_example_pose_graph] [STRATEGY_NO.] "
+                  << "\nError: strategy index: " << argv[2] << " dose not exist. " << std::endl;
+        return 2;
+    }
 
     int vertexCnt = 0, edgeCnt = 0;
 

@@ -50,7 +50,7 @@ public:
 //////////////////////// main ////////////////////////
 int main(int argc, char **argv) {
     if (argc != 2) {
-        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO] \nError: argc is not 2. " << std::endl;
+        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO.] \nError: argc is not 2. " << std::endl;
         return 1;
     }
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
         /// default LM algorithm and strategy 1
         problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
     } else {
-        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO] "
+        std::cerr << "Usage: [RUN_FILE_example_nonlinear_fitting] [STRATEGY_NO.] "
                   << "\nError: strategy index: " << argv[1] << " dose not exist. " << std::endl;
         return 2;
     }
