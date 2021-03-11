@@ -1,6 +1,6 @@
 # LEGO #
 
-**LEGO** is a **L**ight w**E**ight **G**raph-based **O**ptimization library in C++. It is a graph-based non-linear optimization framework for learning and practicing which only depends on Eigen3. This graph-based optimization library is designed for a generic purpose, and it is primarily targeted at visual or visual-inertial SLAM optimization problems. Now, the optimization problem solving in LEGO mainly depends on Levenberg-Marquardt algorithm with two updating strategies in the iterations and it will include more algorithms in the future, such as Dog-leg. This version is only tested on Ubuntu 18.04. 
+**LEGO** is a **L**ight w**E**ight **G**raph-based **O**ptimization library in C++. It is a graph-based non-linear optimization framework for learning and practicing which only depends on Eigen3. This graph-based optimization library is designed for a generic purpose, and it is primarily targeted at visual or visual-inertial SLAM optimization problems. Now, the optimization problem solving in LEGO mainly depends on Levenberg-Marquardt algorithm with two updating strategies in the iterations and it will include more algorithms and updating strategies in the future, such as Dog-leg. This version is only tested on Ubuntu 18.04. 
 
 
 
