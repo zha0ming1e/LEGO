@@ -54,8 +54,7 @@ public:
 
     bool write(ostream &os) const {
         //std::cout << "vertex writing..." << std::endl;
-        //os << getId() << " ";
-        os << getOrderingId() << " ";
+        os << getId() << " ";
         SE3d est = SE3d::exp(estimate_);
         Quaterniond q = est.unit_quaternion();
         os << est.translation().transpose() << " ";
@@ -109,8 +108,7 @@ public:
 
     bool write(ostream &os) const {
         //std::cout << "edge writing..." << std::endl;
-        //os << vertexes_[0]->getId() << " " << vertexes_[1]->getId() << " ";
-        os << vertexes_[0]->getOrderingId() << " " << vertexes_[1]->getOrderingId() << " ";
+        os << vertexes_[0]->getId() << " " << vertexes_[1]->getId() << " ";
         SE3d m = SE3d::exp(measurement_);
         Eigen::Quaterniond q = m.unit_quaternion();
         os << m.translation().transpose() << " ";
@@ -177,8 +175,7 @@ int main(int argc, char **argv) {
             std::shared_ptr<VertexPose> v(new VertexPose());
             int index = 0;
             fin >> index;
-            //v->setId(index);
-            v->setOrderingId(index);
+            v->setId(index);
             v->read(fin);
             problem.addVertex(v);
             vertexCnt++;
@@ -190,8 +187,7 @@ int main(int argc, char **argv) {
             std::shared_ptr<EdgeLieAlgebra> e(new EdgeLieAlgebra());
             int idx1, idx2;
             fin >> idx1 >> idx2;
-            //e->setId(edgeCnt++);
-            e->setOrderingId(edgeCnt++);
+            e->setId(edgeCnt++);
 
             std::vector<std::shared_ptr<lego::BaseVertex>> e_v;
             e_v.push_back(problem.getAllVertexes()[idx1]);
