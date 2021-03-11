@@ -162,4 +162,5 @@ sudo rm -rf /usr/local/lib/liblego_*
 - [**Sophus**](https://github.com/strasdat/Sophus): C++ implementation of Lie Groups using Eigen 
 - [**VINS-Mono**](https://github.com/HKUST-Aerial-Robotics/VINS-Mono): A Robust and Versatile Monocular Visual-Inertial State Estimator 
 - [**VINS-Course**](https://github.com/HeYijia/VINS-Course): VINS-Mono code without Ceres or ROS 
+- [**Gavin, H.. “The Levenberg-Marquardt method for nonlinear least squares curve-fitting problems c ©.” (2013).**](http://people.duke.edu/~hpgavin/ce281/lm.pdf) 
 
