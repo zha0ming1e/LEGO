@@ -208,6 +208,7 @@ int main(int argc, char **argv) {
         if (!fin.good()) break;
     }
 
+    cout << "Example: Pose Graph Optimization with Lie Algebra start... " << endl;
     cout << "Read Total: " << "\nVertexCount = " << vertexCnt << ", EdgeCount = " << edgeCnt << endl;
 
     cout << "Optimizing..." << endl;
