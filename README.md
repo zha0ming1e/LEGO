@@ -127,6 +127,7 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   **Output** 
 
   ```bash
+  Example: Pose Graph Optimization with Lie Algebra start...
   Read Total: 
   VertexCount = 2500, EdgeCount = 9799 
   Optimizing...
