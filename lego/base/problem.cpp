@@ -375,6 +375,7 @@ namespace lego {
             }
             /// Cholesky decomposition
             delta_x_ = H.ldlt().solve(b_);
+            /// PCG solver
             //delta_x_ = PCGSolver(H, b_, H.rows() * 2);
         } else {
             /// step 1: schur complement for marginalization -> Hpp, bpp
@@ -415,7 +416,11 @@ namespace lego {
                     H_pp_schur_(i, i) += currentLambda_ * H_pp_schur_(i, i);
                 }
             }
+            /// Cholesky decomposition
             delta_x_pp =  H_pp_schur_.ldlt().solve(b_pp_schur_);
+            /// PCG solver
+            //delta_x_pp = PCGSolver(H_pp_schur_, b_pp_schur_, H_pp_schur_.rows() * 2);
+            /// update
             delta_x_.head(reserve_size) = delta_x_pp;
 
             /// step 3: solve Hmm * delta_x = bmm - Hmp * delta_x_pp
