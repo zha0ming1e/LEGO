@@ -159,6 +159,8 @@ namespace lego {
         double stopThresholdLM_;
         /// the coe to control lambda
         double ni_;
+        /// difference threshold between last_chi_ and current_chi_
+        double diffChiThreshold_ = 1e-5;
 
         /// types
         ProblemType problemType_;

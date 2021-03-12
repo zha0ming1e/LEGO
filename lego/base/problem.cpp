@@ -206,13 +206,13 @@ namespace lego {
             }
             ++iter;
 
-            /// quit the optimization
-            if (last_chi_ - currentChi_ < 1e-5) {
+            /// quit the optimization: chi difference between two steps < diffChiThreshold_
+            if (last_chi_ - currentChi_ < diffChiThreshold_) {
                 if (verbose_) {
                     std::cout << "\nStop the optimization: "
                               << "[last_chi_(" << last_chi_ << ") - currentChi_(" << currentChi_ << ") = "
                               << last_chi_ - currentChi_
-                              << "] < 1e-5" << std::endl;
+                              << "] < " << diffChiThreshold_ << std::endl;
                 }
                 stop = true;
             }
