@@ -4,7 +4,7 @@
 namespace lego {
 
     void VertexPose::add(const VecX &delta) {
-        VecX &esti = getEstimate();
+        VecX esti = VecX(getEstimate());
 
         /// vector, quaternion, lie algebra additions
         esti.head<3>() += delta.head<3>();

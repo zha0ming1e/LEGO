@@ -4,6 +4,10 @@ set_target_properties(example_nonlinear_fitting PROPERTIES OUTPUT_NAME example_n
 target_link_libraries(example_nonlinear_fitting base)
 
 # example_pose_graph
-add_executable(example_pose_graph pose_graph/example_pose_graph.cpp)
-set_target_properties(example_pose_graph PROPERTIES OUTPUT_NAME example_pose_graph${EXE_POSTFIX})
-target_link_libraries(example_pose_graph base slam)
+add_executable(example_pose_graph_lie_algebra pose_graph/example_pose_graph_lie_algebra.cpp)
+set_target_properties(example_pose_graph_lie_algebra PROPERTIES OUTPUT_NAME example_pose_graph_lie_algebra${EXE_POSTFIX})
+target_link_libraries(example_pose_graph_lie_algebra base slam)
+
+add_executable(example_pose_graph_SE3 pose_graph/example_pose_graph_SE3.cpp)
+set_target_properties(example_pose_graph_SE3 PROPERTIES OUTPUT_NAME example_pose_graph_SE3${EXE_POSTFIX})
+target_link_libraries(example_pose_graph_SE3 base slam)

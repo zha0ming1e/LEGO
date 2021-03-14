@@ -6,7 +6,7 @@
 namespace lego {
 
     void EdgeReprojection::computeResidual() {
-        double inv_dep_i = vertexes_[0]->getEstimate()[0];
+        double inv_dep_i = vertexes_[0]->getEstimate()(0, 0);
 
         VecX param_i = vertexes_[1]->getEstimate();
         Qd Qi(param_i[6], param_i[3], param_i[4], param_i[5]);
@@ -37,7 +37,7 @@ namespace lego {
     //}
 
     void EdgeReprojection::computeJacobians() {
-        double inv_dep_i = vertexes_[0]->getEstimate()[0];
+        double inv_dep_i = vertexes_[0]->getEstimate()(0, 0);
 
         VecX param_i = vertexes_[1]->getEstimate();
         Qd Qi(param_i[6], param_i[3], param_i[4], param_i[5]);

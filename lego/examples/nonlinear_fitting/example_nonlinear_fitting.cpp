@@ -23,7 +23,8 @@ class DataFittingEdge : public lego::BaseEdge {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-    explicit DataFittingEdge(double x) : BaseEdge(1,1, std::vector<std::string>{"a, b, c"}), x_(x) {}
+    explicit DataFittingEdge(double x) : BaseEdge(1, 1, 1, 1,
+                                                  std::vector<std::string>{"a, b, c"}), x_(x) {}
     /// compute residual
     void computeResidual() override {
         /// estimate

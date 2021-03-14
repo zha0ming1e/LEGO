@@ -89,7 +89,6 @@ namespace lego {
             jacobian_speedbias_i.block<3, 3>(O_P, O_V - O_V) = -Qi.inverse().toRotationMatrix() * sum_dt;
             jacobian_speedbias_i.block<3, 3>(O_P, O_BA - O_V) = -dp_dba;
             jacobian_speedbias_i.block<3, 3>(O_P, O_BG - O_V) = -dp_dbg;
-
 #if 0
             jacobian_speedbias_i.block<3, 3>(O_R, O_BG - O_V) = -dq_dbg;
 #else

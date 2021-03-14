@@ -289,10 +289,10 @@ namespace lego {
 
             /// build the hessian with all blocks
             auto jacobians = edge.second->getJacobians();
-            auto verticies = edge.second->getAllVertexes();
-            assert(jacobians.size() == verticies.size());
-            for (size_t i = 0; i < verticies.size(); ++i) {
-                auto v_i = verticies[i];
+            auto vertexes = edge.second->getAllVertexes();
+            assert(jacobians.size() == vertexes.size());
+            for (size_t i = 0; i < vertexes.size(); ++i) {
+                auto v_i = vertexes[i];
                 /// fixed: jacobian == 0
                 if (v_i->isFixed()) continue;
 
@@ -307,8 +307,8 @@ namespace lego {
 
                 /// jacobian * RobustInformationMatrix
                 MatXX JtW = jacobian_i.transpose() * robustInfo;
-                for (size_t j = i; j < verticies.size(); ++j) {
-                    auto v_j = verticies[j];
+                for (size_t j = i; j < vertexes.size(); ++j) {
+                    auto v_j = vertexes[j];
 
                     if (v_j->isFixed()) continue;
 
@@ -447,7 +447,6 @@ namespace lego {
             /// backup prior in the last iteration
             b_prior_backup_ = b_prior_;
             err_prior_backup_ = err_prior_;
-
             /// update prior with the first order Taylor expansion
             b_prior_ -= H_prior_ * delta_x_.head(ordering_poses_);
             err_prior_ = -Jt_prior_inv_ * b_prior_.head(ordering_poses_ - 15);
@@ -623,8 +622,8 @@ namespace lego {
         /// keep pose vertex ordering, reorder landmark vertex ordering
         int marg_landmark_size = 0;
         for (auto &marg_edge : marg_edges) {
-            auto verticies = marg_edge->getAllVertexes();
-            for (auto &iter : verticies) {
+            auto vertexes = marg_edge->getAllVertexes();
+            for (auto &iter : vertexes) {
                 if (isLandmarkVertex(iter) && margLandmark.find(iter->getId()) == margLandmark.end()) {
                     iter->setOrderingId(pose_dim + marg_landmark_size);
                     margLandmark.insert(std::make_pair(iter->getId(), iter));
@@ -644,12 +643,12 @@ namespace lego {
             edge->computeJacobians();
 
             auto jacobians = edge->getJacobians();
-            auto verticies = edge->getAllVertexes();
+            auto vertexes = edge->getAllVertexes();
             ii++;
 
-            assert(jacobians.size() == verticies.size());
-            for (size_t i = 0; i < verticies.size(); ++i) {
-                auto v_i = verticies[i];
+            assert(jacobians.size() == vertexes.size());
+            for (size_t i = 0; i < vertexes.size(); ++i) {
+                auto v_i = vertexes[i];
                 auto jacobian_i = jacobians[i];
                 ulong index_i = v_i->getOrderingId();
                 ulong dim_i = v_i->getDoF();
@@ -657,8 +656,8 @@ namespace lego {
                 double drho;
                 MatXX robustInfo(edge->getInformation().rows(), edge->getInformation().cols());
                 edge->computeRobustInformation(drho, robustInfo);
-                for (size_t j = i; j < verticies.size(); ++j) {
-                    auto v_j = verticies[j];
+                for (size_t j = i; j < vertexes.size(); ++j) {
+                    auto v_j = vertexes[j];
                     auto jacobian_j = jacobians[j];
                     ulong index_j = v_j->getOrderingId();
                     ulong dim_j = v_j->getDoF();

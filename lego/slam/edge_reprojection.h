@@ -22,7 +22,7 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         EdgeReprojection(const Vec3 &pts_i, const Vec3 &pts_j)
-                : BaseEdge(2, 4,
+                : BaseEdge(2, 4, 2, 1,
                            std::vector<std::string>{"VertexInverseDepth", "VertexPose", "VertexPose", "VertexPose"}) {
             pts_i_ = pts_i;
             /// set measurement
@@ -60,7 +60,8 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         explicit EdgeReprojectionXYZ(const Vec3 &pts_i)
-                : BaseEdge(2, 2, std::vector<std::string>{"VertexXYZ", "VertexPose"}) {
+                : BaseEdge(2, 2, 2, 1,
+                           std::vector<std::string>{"VertexXYZ", "VertexPose"}) {
             /// set measurement
             measurement_ = pts_i.head<2>();
         }
@@ -89,7 +90,8 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         EdgeReprojectionPoseOnly(const Vec3 &landmark_world, const Mat33 &K) :
-                BaseEdge(2, 1, std::vector<std::string>{"VertexPose"}),
+                BaseEdge(2, 1, 2, 1,
+                         std::vector<std::string>{"VertexPose"}),
                 landmark_world_(landmark_world), K_(K) {}
 
         std::string getInfo() const override { return "EdgeReprojectionPoseOnly"; }

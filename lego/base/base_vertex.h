@@ -15,24 +15,27 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         /// constructor: if dof == -1, dof == dim
-        explicit BaseVertex(int dim, int dof=-1);
+        explicit BaseVertex(int rows, int cols=1, int dof=-1);
         /// desctructor
         virtual ~BaseVertex();
 
         /// get vertex dimension
-        int getDim() const;
+        unsigned long getDim() const;
         /// get vertex dof
         int getDoF() const;
+        /// get estimate rows and cols
+        int getEstimateRows() const { return estimate_rows_; }
+        int getEstimateCols() const { return estimate_cols_; }
         /// set vertex id
         void setId(unsigned long id) { id_ = id; }
         /// get vertex id
         unsigned long getId() const { return id_; }
         /// get vertex estimate
-        VecX getEstimate() const { return estimate_; }
+        MatXX getEstimate() const { return estimate_; }
         /// get vertex estimate reference
-        VecX &getEstimate() { return estimate_; }
+        MatXX &getEstimate() { return estimate_; }
         /// set vertex estimate
-        void setEstimate(const VecX &estimate) { estimate_ = estimate; }
+        void setEstimate(const MatXX &estimate) { estimate_ = estimate; }
         /// backup estimate_ in estimate_backup_
         void backupEstimate() { estimate_backup_ = estimate_; }
         /// rollback estimate from estimate_backup_
@@ -49,14 +52,17 @@ namespace lego {
         bool isFixed() const { return fixed_; }
 
         /// general addition for overloading, linear vector addition for default
-        virtual void add(const VecX &delta);
+        virtual void add(const MatXX &delta);
 
     /// protected: for inheriting
     protected:
         /// estimate
-        VecX estimate_;
+        MatXX estimate_;
         /// backup estimate for rollback
-        VecX estimate_backup_;
+        MatXX estimate_backup_;
+        /// estimate rows and cols
+        int estimate_rows_ = 0;
+        int estimate_cols_ = 1;
         /// degree of freedom
         int dof_;
         unsigned long id_;

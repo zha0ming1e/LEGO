@@ -50,7 +50,9 @@ namespace lego {
         };
 
         /// constructor
-        Problem(ProblemType problemType=ProblemType::SLAM, AlgorithmType algorithmType=AlgorithmType::LM, StrategyType strategyType=StrategyType::DEFAULT);
+        explicit Problem(ProblemType problemType=ProblemType::SLAM,
+                         AlgorithmType algorithmType=AlgorithmType::LM,
+                         StrategyType strategyType=StrategyType::DEFAULT);
         /// destructor
         ~Problem();
 

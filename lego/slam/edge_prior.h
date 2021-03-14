@@ -17,7 +17,8 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         EdgeSE3Prior(const Vec3 &p, const Qd &q) :
-                BaseEdge(6, 1, std::vector<std::string>{"VertexPose"}) {
+                BaseEdge(6, 1, 6, 1,
+                         std::vector<std::string>{"VertexPose"}) {
             Qp_ = q;
             Pp_ = p;
 

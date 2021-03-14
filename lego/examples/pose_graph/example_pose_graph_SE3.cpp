@@ -1,5 +1,5 @@
 /*
- * example: pose graph optimization with Lie algebra
+ * example: pose graph optimization with SE3
  */
 
 #include <iostream>
@@ -34,13 +34,13 @@ Mat66 JRInv(const SE3d &e) {
     return J;
 }
 
-/// pose vertex on lie algebra
+/// pose vertex on SE3
 class VertexPose : public lego::BaseVertex {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-    VertexPose() : lego::BaseVertex(6, 6) {
-        estimate_ = Vec6::Zero();
+    VertexPose() : lego::BaseVertex(4, 4, 6) {
+        estimate_ = Mat44::Zero();
     }
 
     bool read(istream &is) {
@@ -48,12 +48,12 @@ public:
         for (int i = 0; i < 7; i++)
             is >> data[i];
         estimate_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
-                         Vec3(data[0], data[1], data[2])).log();
+                         Vec3(data[0], data[1], data[2])).matrix();
     }
 
     bool write(ostream &os) const {
         os << getId() << " ";
-        SE3d est = SE3d::exp(estimate_);
+        SE3d est = SE3d(estimate_);
         Quaterniond q = est.unit_quaternion();
         os << est.translation().transpose() << " ";
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << endl;
@@ -66,29 +66,30 @@ public:
         Vec6 upd;
         upd << update[0], update[1], update[2], update[3], update[4], update[5];
 
-        estimate_ = (SE3d::exp(upd) * SE3d::exp(estimate_)).log();
+        estimate_ = (SE3d::exp(upd) * estimate_).matrix();
     }
 
     std::string getInfo() const override { return std::string("VertexPose"); }
 };
 
-/// edge between lie algebra
-class EdgeLieAlgebra : public lego::BaseEdge {
+/// edge between SE3
+class EdgeSE3 : public lego::BaseEdge {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-    EdgeLieAlgebra()
-        : lego::BaseEdge(6, 2, std::vector<std::string>{"VertexPose", "VertexPose"}) {
+    EdgeSE3() : lego::BaseEdge(6, 2, 4, 4,
+                               std::vector<std::string>{"VertexPose", "VertexPose"}) {
         residual_ = Vec6::Zero();
-        measurement_ = Vec6::Zero();
+        measurement_ = Mat44::Zero();
     }
 
     bool read(istream &is) {
         double data[7];
         for (int i = 0; i < 7; i++)
             is >> data[i];
-        measurement_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
-                            Vec3(data[0], data[1], data[2])).log();
+        Quaterniond q(data[6], data[3], data[4], data[5]);
+        q.normalize();
+        measurement_ = SE3d(q, Vec3(data[0], data[1], data[2])).matrix();
 
         int rows = information_.rows(), cols = information_.cols();
         for (int i = 0; i < rows && is.good(); i++) {
@@ -105,7 +106,7 @@ public:
 
     bool write(ostream &os) const {
         os << vertexes_[0]->getId() << " " << vertexes_[1]->getId() << " ";
-        SE3d m = SE3d::exp(measurement_);
+        SE3d m = SE3d(measurement_);
         Eigen::Quaterniond q = m.unit_quaternion();
         os << m.translation().transpose() << " ";
         os << q.coeffs()[0] << " " << q.coeffs()[1] << " " << q.coeffs()[2] << " " << q.coeffs()[3] << " ";
@@ -123,16 +124,16 @@ public:
 
     /// residual
     void computeResidual() override {
-        SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
-        SE3d v2 = SE3d::exp(vertexes_[1]->getEstimate());
-        SE3d mea = SE3d::exp(measurement_);
-        residual_ = (mea.inverse() * v1.inverse() * v2).log();
+        SE3d v1 = SE3d(vertexes_[0]->getEstimate());
+        SE3d v2 = SE3d(vertexes_[1]->getEstimate());
+        SE3d meas = SE3d(measurement_);
+        residual_ = (meas.inverse() * v1.inverse() * v2).log();
     }
 
     /// jacobian
     void computeJacobians() override {
-        //SE3d v1 = SE3d::exp(vertexes_[0]->getEstimate());
-        SE3d v2 = SE3d::exp(vertexes_[1]->getEstimate());
+        //SE3d v1 = SE3d(vertexes_[0]->getEstimate());
+        SE3d v2 = SE3d(vertexes_[1]->getEstimate());
         Mat66 J = JRInv(SE3d::exp(residual_));
 
         //jacobians_[0] = Mat66::Zero();
@@ -141,13 +142,13 @@ public:
         jacobians_[1] = -1.0 * jacobians_[0];
     }
 
-    std::string getInfo() const override { return std::string("EdgeLieAlgebra"); }
+    std::string getInfo() const override { return std::string("EdgeSE3"); }
 };
 
 /// main
 int main(int argc, char **argv) {
     if (argc != 3) {
-        cout << "Usage: [RUN_FILE_example_pose_graph] sphere.g2o [STRATEGY_NO.] \nError: argc is not 3. " << endl;
+        cout << "Usage: [RUN_FILE_example_pose_graph] [sphere.g2o] [STRATEGY_NO.] \nError: argc is not 3. " << endl;
         return 1;
     }
 
@@ -166,7 +167,7 @@ int main(int argc, char **argv) {
         /// default LM algorithm and strategy 1
         problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
     } else {
-        std::cerr << "Usage: [RUN_FILE_example_pose_graph] [STRATEGY_NO.] "
+        std::cerr << "Usage: [RUN_FILE_example_pose_graph] [sphere.g2o] [STRATEGY_NO.] "
                   << "\nError: strategy index: " << argv[2] << " dose not exist. " << std::endl;
         return 2;
     }
@@ -174,7 +175,7 @@ int main(int argc, char **argv) {
     int vertexCnt = 0, edgeCnt = 0;
 
     vector<std::shared_ptr<VertexPose>> vectexes;
-    vector<std::shared_ptr<EdgeLieAlgebra>> edges;
+    vector<std::shared_ptr<EdgeSE3>> edges;
     while (!fin.eof()) {
         string name;
         fin >> name;
@@ -192,7 +193,7 @@ int main(int argc, char **argv) {
                 v->setFixed(true);
         } else if (name == "EDGE_SE3:QUAT") {
             // edge
-            std::shared_ptr<EdgeLieAlgebra> e(new EdgeLieAlgebra());
+            std::shared_ptr<EdgeSE3> e(new EdgeSE3());
             int idx1, idx2;
             fin >> idx1 >> idx2;
             e->setId(edgeCnt++);
@@ -208,7 +209,7 @@ int main(int argc, char **argv) {
         if (!fin.good()) break;
     }
 
-    cout << "Example: Pose Graph Optimization with Lie Algebra start... " << endl;
+    cout << "Example: Pose Graph Optimization with SE3 start... " << endl;
     cout << "Read Total: " << "\nVertexCount = " << vertexCnt << ", EdgeCount = " << edgeCnt << endl;
 
     cout << "Optimizing..." << endl;
@@ -218,7 +219,7 @@ int main(int argc, char **argv) {
     cout << "\nSaving optimization results..." << endl;
 
     // output
-    ofstream fout("result_lie.g2o");
+    ofstream fout("result_SE3.g2o");
     for (auto &v : vectexes) {
         fout << "VERTEX_SE3:QUAT ";
         v->write(fout);

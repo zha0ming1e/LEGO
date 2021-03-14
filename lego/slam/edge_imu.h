@@ -213,7 +213,8 @@ namespace lego {
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
         explicit EdgeIMU(IntegrationBase *_pre_integration) : pre_integration_(_pre_integration),
-                BaseEdge(15, 4, std::vector<std::string>{"VertexPose", "VertexSpeedBias", "VertexPose", "VertexSpeedBias"}) {}
+                BaseEdge(15, 4, 15, 1,
+                         std::vector<std::string>{"VertexPose", "VertexSpeedBias", "VertexPose", "VertexSpeedBias"}) {}
 
         void computeResidual() override;
 

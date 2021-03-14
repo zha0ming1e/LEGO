@@ -17,10 +17,10 @@ namespace lego {
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-        VertexPose() : BaseVertex(7, 6) {}
+        VertexPose() : BaseVertex(7, 1, 6) {}
 
         /// add override
-        void add(const VecX &delta) override;
+        void add(const VecX &delta);
 
         std::string getInfo() const override { return "VertexPose"; }
     };
