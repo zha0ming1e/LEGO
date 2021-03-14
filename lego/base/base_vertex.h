@@ -14,15 +14,15 @@ namespace lego {
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
-        /// constructor: if local_dim == -1, local_dim == dim
-        explicit BaseVertex(int dim, int local_dim=-1);
+        /// constructor: if dof == -1, dof == dim
+        explicit BaseVertex(int dim, int dof=-1);
         /// desctructor
         virtual ~BaseVertex();
 
         /// get vertex dimension
         int getDim() const;
-        /// get vertex local dimension
-        int getLocalDim() const;
+        /// get vertex dof
+        int getDoF() const;
         /// set vertex id
         void setId(unsigned long id) { id_ = id; }
         /// get vertex id
@@ -57,7 +57,8 @@ namespace lego {
         VecX estimate_;
         /// backup estimate for rollback
         VecX estimate_backup_;
-        int local_dimension_;
+        /// degree of freedom
+        int dof_;
         unsigned long id_;
         /// ordering id is the ordered id in the problem for searching the corresponding hessian blocks
         unsigned long ordering_id_ = 0;

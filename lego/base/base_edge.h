@@ -32,8 +32,8 @@ namespace lego {
             return true;
         }
         /// set vertex
-        bool setVertex(const std::vector<std::shared_ptr<BaseVertex>> &vertices) {
-            vertexes_ = vertices;
+        bool setVertex(const std::vector<std::shared_ptr<BaseVertex>> &vertexes) {
+            vertexes_ = vertexes;
             return true;
         }
         /// get the vertex with index i
