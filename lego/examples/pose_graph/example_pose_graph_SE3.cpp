@@ -66,7 +66,7 @@ public:
         Vec6 upd;
         upd << update[0], update[1], update[2], update[3], update[4], update[5];
 
-        estimate_ = (SE3d::exp(upd) * estimate_).matrix();
+        estimate_ = (SE3d::exp(upd) * SE3d(estimate_)).matrix();
     }
 
     std::string getInfo() const override { return std::string("VertexPose"); }
@@ -86,9 +86,8 @@ public:
     bool read(istream &is) {
         double data[7];
         for (double &i : data) is >> i;
-        Quaterniond q(data[6], data[3], data[4], data[5]);
-        q.normalize();
-        measurement_ = SE3d(q, Vec3(data[0], data[1], data[2])).matrix();
+        measurement_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
+                            Vec3(data[0], data[1], data[2])).matrix();
 
         int rows = information_.rows(), cols = information_.cols();
         for (int i = 0; i < rows && is.good(); i++) {
@@ -160,11 +159,14 @@ int main(int argc, char **argv) {
     /// build the problem and initial settings
     /// default LM algorithm and strategy
     lego::Problem problem(lego::Problem::ProblemType::SLAM);
+    std::string strategy_no;
     if (std::stoi(argv[2]) == 0) {
         //problem.setStrategyType(lego::Problem::StrategyType::DEFAULT);
+        strategy_no = "0";
     } else if (std::stoi(argv[2]) == 1) {
         /// default LM algorithm and strategy 1
         problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
+        strategy_no = "1";
     } else {
         std::cerr << "Usage: [RUN_FILE_example_pose_graph] [sphere.g2o] [STRATEGY_NO.] "
                   << "\nError: strategy index: " << argv[2] << " dose not exist. " << std::endl;
@@ -217,8 +219,8 @@ int main(int argc, char **argv) {
 
     cout << "\nSaving optimization results..." << endl;
 
-    // output
-    ofstream fout("result_SE3.g2o");
+    // output with g2o format
+    ofstream fout("result_SE3_" + strategy_no + ".g2o");
     for (auto &v : vectexes) {
         fout << "VERTEX_SE3:QUAT ";
         v->write(fout);
