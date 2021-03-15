@@ -120,30 +120,52 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
 
     ![nonlinear_fitting](./image/nonlinear_fitting.png) 
 
-- **Pose Graph Optimization on SE3/se3** (e.g. pose graph optimization on se3/Lie algebra with the default updating strategy) 
+- **Pose Graph Optimization on SE3/se3** 
+
+  (e.g. pose graph optimization on se3/Lie algebra with the default updating strategy) 
 
   **Run** 
-
+  
   ```bash
-  ./bin/example_pose_graph_lie_algebra ./lego/examples/pose_graph/sphere.g2o 0 
+./bin/example_pose_graph_lie_algebra ./lego/examples/pose_graph/sphere.g2o 0 
   ```
 
   **Output** 
-
+  
   ```bash
   Example: Pose Graph Optimization with Lie Algebra start...
-  Read Total: 
-  VertexCount = 2500, EdgeCount = 9799 
+  Read Total:
+  VertexCount = 2500, EdgeCount = 9799
   Optimizing...
   ==========LEGO OPTIMIZER==========
-  Iteration = 0,	Chi = 4.78072e+09,	Lambda = 20119.8
-  Iteration = 1,	Chi = 1.92146e+09,	Lambda = 13413.2
-  Iteration = 2,	Chi = 1.23104e+09,	Lambda = 8942.11
-  Iteration = 3,	Chi = 1.09913e+09,	Lambda = 5961.41
-  Iteration = 4,	Chi = 1.03169e+09,	Lambda = 3974.27
-  Iteration = 5,	Chi = 9.30259e+08,	Lambda = 2649.52
-  Iteration = 6,	Chi = 8.81683e+08,	Lambda = 1766.34
-  ...
+  Iteration = 0,  Chi = 4.78072e+09,      Lambda = 20119.8
+  Iteration = 1,  Chi = 3.13329e+08,      Lambda = 6706.59
+  Iteration = 2,  Chi = 1.16618e+08,      Lambda = 2235.53
+  Iteration = 3,  Chi = 7.13149e+07,      Lambda = 745.176
+  Iteration = 4,  Chi = 4.21091e+07,      Lambda = 248.392
+  Iteration = 5,  Chi = 2.10751e+07,      Lambda = 82.7973
+  Iteration = 6,  Chi = 8.36379e+06,      Lambda = 27.5991
+  Iteration = 7,  Chi = 3.09541e+06,      Lambda = 9.19971
+  Iteration = 8,  Chi = 1.10012e+06,      Lambda = 3.06657
+  Iteration = 9,  Chi = 367621,   Lambda = 1.02219
+  Iteration = 10, Chi = 142505,   Lambda = 0.34073
+  Iteration = 11, Chi = 85654.1,  Lambda = 0.185811
+  Iteration = 12, Chi = 72762.7,  Lambda = 0.061937
+  Iteration = 13, Chi = 71210.5,  Lambda = 0.0206457
+  Iteration = 14, Chi = 68794.8,  Lambda = 0.00688189
+  Iteration = 15, Chi = 65649.9,  Lambda = 0.00229396
+  Iteration = 16, Chi = 64014.7,  Lambda = 0.000764654
+  Iteration = 17, Chi = 63794.2,  Lambda = 0.000254885
+  Iteration = 18, Chi = 63789.1,  Lambda = 8.49616e-05
+  Iteration = 19, Chi = 63789.1,  Lambda = 2.83205e-05
+  
+  Stop the optimization: [last_chi_(63789.1) - currentChi_(63789.1) = 5.42382e-06] < 1e-05
+  
+  Info:
+  TimeCost(SolveProblem) = 1.17305e+07 ms
+  TimeCost(BuildHessian) = 18156.1 ms
+  
+  Saving optimization results... 
   ```
   
   **Result** 
