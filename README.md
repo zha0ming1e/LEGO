@@ -120,7 +120,7 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
 
     ![nonlinear_fitting](./image/nonlinear_fitting.png) 
 
-- **Pose Graph Optimization on SE3/se3** 
+- **Pose Graph Optimization on SE3/se3** (e.g. pose graph optimization on se3/Lie algebra with the default updating strategy) 
 
   **Run** 
 
@@ -145,8 +145,14 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   Iteration = 6,	Chi = 8.81683e+08,	Lambda = 1766.34
   ...
   ```
+  
+  **Result** 
+  
+  ![before_after_optimization](./image/before_after_optimization.png) 
+  
+  ![optimization_comparison](./image/optimization_comparison.gif)  
 
-### Uninstall 
+### Uninstall
 
 We can delete the LEGO header files (\*.h/\*.hpp) and libs (\*.so) from where we installed it. Default: 
 
