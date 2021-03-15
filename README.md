@@ -39,7 +39,7 @@ Now we have already installed the LEGO and then we can test and use it.
 
 ### Examples
 
-There are two examples which are implemented by LEGO (one of non-linear data fitting and one of pose graph optimization on SE3/se3 with Lie algebra) under the [lego/examples/](./lego/examples/) folder. 
+There are two examples which are implemented by LEGO (one of non-linear data fitting and one of pose graph optimization on SE3/se3 with Lie group/algebra) under the [lego/examples/](./lego/examples/) folder.
 
 - **Non-linear Data Fitting** 
 
