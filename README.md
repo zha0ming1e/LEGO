@@ -169,7 +169,10 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   ```
   
   **Result** 
-  
+  ```bash 
+  # g2o_viewer: just for visualization 
+  g2o_viewer ./result_lie_0.g2o 
+  ```
   ![before_after_optimization](./image/before_after_optimization.png) 
   
   ![optimization_comparison](./image/optimization_comparison.gif)  
