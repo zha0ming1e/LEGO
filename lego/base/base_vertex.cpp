@@ -23,8 +23,6 @@ namespace lego {
         return dof_;
     }
 
-    void BaseVertex::add(const MatXX &delta) {
-        /// linear addition for default
-        estimate_ += delta;
-    }
+    /// linear addition for default
+    //void BaseVertex::add(const VecX &delta) { if (estimate_cols_ == 1) estimate_ += delta; }
 }

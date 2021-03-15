@@ -52,7 +52,8 @@ namespace lego {
         bool isFixed() const { return fixed_; }
 
         /// general addition for overloading, linear vector addition for default
-        virtual void add(const MatXX &delta);
+        /// pure virtual for overriding
+        virtual void add(const VecX &delta) = 0;
 
     /// protected: for inheriting
     protected:

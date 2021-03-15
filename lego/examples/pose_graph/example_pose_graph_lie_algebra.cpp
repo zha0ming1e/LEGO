@@ -45,8 +45,7 @@ public:
 
     bool read(istream &is) {
         double data[7];
-        for (int i = 0; i < 7; i++)
-            is >> data[i];
+        for (double &i : data) is >> i;
         estimate_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
                          Vec3(data[0], data[1], data[2])).log();
     }
@@ -62,7 +61,8 @@ public:
     }
 
     /// left multiplication
-    void add(const double *update) {
+    /// overriding add
+    void add(const VecX &update) override {
         Vec6 upd;
         upd << update[0], update[1], update[2], update[3], update[4], update[5];
 
@@ -86,8 +86,7 @@ public:
 
     bool read(istream &is) {
         double data[7];
-        for (int i = 0; i < 7; i++)
-            is >> data[i];
+        for (double &i : data) is >> i;
         measurement_ = SE3d(Quaterniond(data[6], data[3], data[4], data[5]),
                             Vec3(data[0], data[1], data[2])).log();
 

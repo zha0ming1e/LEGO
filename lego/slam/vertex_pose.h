@@ -20,7 +20,7 @@ namespace lego {
         VertexPose() : BaseVertex(7, 1, 6) {}
 
         /// add override
-        void add(const VecX &delta);
+        void add(const VecX &delta) override;
 
         std::string getInfo() const override { return "VertexPose"; }
     };

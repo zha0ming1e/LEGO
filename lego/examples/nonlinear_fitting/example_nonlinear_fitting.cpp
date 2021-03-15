@@ -15,6 +15,10 @@ public:
 
     /// 3 dim
     DataFittingVertex() : BaseVertex(3) {}
+
+    /// overriding add
+    void add(const VecX &delta) override { estimate_ += delta; }
+
     std::string getInfo() const override { return "DataFittingVertex"; }
 };
 

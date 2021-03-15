@@ -439,6 +439,7 @@ namespace lego {
             ulong idx = vertex.second->getOrderingId();
             ulong dim = vertex.second->getDoF();
             VecX delta = delta_x_.segment(idx, dim);
+
             vertex.second->add(delta);
         }
 
