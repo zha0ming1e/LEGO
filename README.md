@@ -113,8 +113,12 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
     --------Estimates after optimization--------
     a, b, c = 0.98179, 2.0277, 0.989624
     --------Ground truth--------
-    a, b, c = 1.0, 2.0, 1.0
+    a, b, c = 1.0, 2.0, 1.0 
     ```
+    
+  - **Result** 
+
+    ![nonlinear_fitting](./image/nonlinear_fitting.png) 
 
 - **Pose Graph Optimization on SE3/se3** 
 
