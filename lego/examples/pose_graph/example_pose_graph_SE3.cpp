@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
 
     cout << "Optimizing..." << endl;
     //problem.setInitialLambda(1000);
-    problem.solve(100);
+    problem.solve(50);
 
     cout << "\nSaving optimization results..." << endl;
 
