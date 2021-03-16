@@ -146,7 +146,7 @@ public:
 /// main
 int main(int argc, char **argv) {
     if (argc != 3) {
-        cout << "Usage: [RUN_FILE_example_pose_graph] [sphere.g2o] [STRATEGY_NO.] \nError: argc is not 3. " << endl;
+        cout << "Usage: [RUN_FILE_example_pose_graph] [sphere_with_noise.g2o] [STRATEGY_NO.] \nError: argc is not 3. " << endl;
         return 1;
     }
 
@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
         problem.setStrategyType(lego::Problem::StrategyType::STRATEGY1);
         strategy_no = "1";
     } else {
-        std::cerr << "Usage: [RUN_FILE_example_pose_graph] [sphere.g2o] [STRATEGY_NO.] "
+        std::cerr << "Usage: [RUN_FILE_example_pose_graph] [sphere_with_noise.g2o] [STRATEGY_NO.] "
                   << "\nError: strategy index: " << argv[2] << " dose not exist. " << std::endl;
         return 2;
     }

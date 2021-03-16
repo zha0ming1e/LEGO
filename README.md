@@ -127,7 +127,7 @@ There are two examples which are implemented by LEGO (one of non-linear data fit
   **Run** 
   
   ```bash 
-  ./bin/example_pose_graph_lie_algebra ./lego/examples/pose_graph/sphere.g2o 0 
+  ./bin/example_pose_graph_lie_algebra ./lego/examples/pose_graph/sphere_with_noise.g2o 0 
   ```
 
   **Output** 
